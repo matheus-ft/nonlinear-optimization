@@ -1,0 +1,8 @@
+attrs~=23.1.0
+black~=23.9.1
+docformatter~=1.7.5
+ipykernel~=6.25.2
+jupytext~=1.15.2
+matplotlib~=3.8.0
+numpy~=1.25.2
+scipy~=1.11.3

@@ -28,8 +28,9 @@ class GradientMethod:
         if value <= 0:
             raise ValueError(f"{attribute.name} must be greater than zero")
 
-    def __call__(self, x_0: np.ndarray):
+    def __call__(self, x_0: np.ndarray) -> tuple[list[np.ndarray], int]:
         x: list[np.ndarray] = [x_0]
+        iterations: int = 0
         for k in range(int(self.max_iterations)):
             x_k = x[k]
 
@@ -47,4 +48,5 @@ class GradientMethod:
                 t_k *= self.sigma
             s_k = t_k * d_k
             x.append(x_k + s_k)
-        return x, k
+            iterations = k
+        return x, iterations

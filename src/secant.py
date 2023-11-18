@@ -34,8 +34,9 @@ class SecantMethod:
         if value <= 0:
             raise ValueError(f"{attribute.name} must be greater than zero")
 
-    def __call__(self, x_0: np.ndarray):
+    def __call__(self, x_0: np.ndarray) -> tuple[list[np.ndarray], int]:
         x: list[np.ndarray] = [x_0]
+        iterations: int = 0
         H_k = self.H_0
         for k in range(self.max_iterations):
             x_k = x[k]
@@ -58,7 +59,7 @@ class SecantMethod:
                 d_k = -grad_k
                 d_k_2norm = grad_2norm
 
-            # check beta
+            # check beta (size of the direction chosen)
             if d_k_2norm < self.beta * grad_2norm:
                 d_k *= self.beta * grad_2norm / d_k_2norm
 
@@ -90,4 +91,5 @@ class SecantMethod:
                     H_k -= outer_prod / inner_prod
             else:
                 raise AttributeError(f"Invalid {self.correction_method=}")
-        return x, k
+            iterations = k
+        return x, iterations

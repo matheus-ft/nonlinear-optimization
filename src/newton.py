@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Union
 
 import numpy as np
 import scipy.linalg as sla
@@ -36,7 +36,9 @@ class NewtonMethod:
         if value <= 0:
             raise ValueError(f"{attribute.name} must be greater than zero")
 
-    def _direction(self, hess_k, grad_k):
+    def _direction(
+        self, hess_k: np.ndarray, grad_k: np.ndarray
+    ) -> Union[np.ndarray, None]:
         try:
             d_k = sla.solve(hess_k, -grad_k, assume_a="sym")
         except LinAlgError:  # hess is singular
@@ -45,8 +47,9 @@ class NewtonMethod:
             raise ValueError("Hessian matrix provided is not square")
         return d_k
 
-    def __call__(self, x_0: np.ndarray):
+    def __call__(self, x_0: np.ndarray) -> tuple[list[np.ndarray], int]:
         x: list[np.ndarray] = [x_0]
+        iterations: int = 0
         for k in range(self.max_iterations):
             x_k = x[k]
 
@@ -71,7 +74,7 @@ class NewtonMethod:
                     d_k_2norm = sla.norm(d_k, 2)
                     inner_prod = grad_k.T @ d_k
 
-            # check beta
+            # check beta (size of the direction chosen)
             if d_k_2norm < self.beta * grad_2norm:
                 d_k *= self.beta * grad_2norm / d_k_2norm
 
@@ -83,4 +86,5 @@ class NewtonMethod:
                 t_k *= self.sigma
             s_k = t_k * d_k
             x.append(x_k + s_k)
-        return x, k
+            iterations = k
+        return x, iterations

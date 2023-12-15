@@ -6,3 +6,4 @@ jupytext~=1.15.2
 matplotlib~=3.8.0
 numpy~=1.25.2
 scipy~=1.11.3
+sympy~=1.12

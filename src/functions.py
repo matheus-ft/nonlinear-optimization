@@ -17,10 +17,10 @@ def array_to_vector(point: list):
 
 def quadratic(vector: np.ndarray):
     n = vector.shape[0]
-    soma = 0
+    f = 0
     for i in range(n):
-        soma += (i + 1) * (vector[i, 0] ** 2)
-    return soma
+        f += (i + 1) * (vector[i, 0] ** 2)
+    return f
 
 
 def gradient_quadratic(vector: np.ndarray):
@@ -45,19 +45,19 @@ def hess_quadratic(vector: np.ndarray):
 def rosenbrook(vector: np.ndarray):
     n = vector.shape[0]
     if n % 2 != 0:
-        raise TypeError(f"Dimension {n=} must be an even number!")
-    soma = 0
+        raise ValueError(f"Dimension {n=} must be an even number!")
+    f = 0
     for j in range(n // 2):
-        soma += 10 * ((vector[2 * j + 1, 0] - (vector[2 * j, 0]) ** 2) ** 2) + (
+        f += 10 * ((vector[2 * j + 1, 0] - (vector[2 * j, 0]) ** 2) ** 2) + (
             (vector[2 * j, 0] - 1) ** 2
         )
-    return soma
+    return f
 
 
 def gradient_rosenbrook(vector: np.ndarray):
     n = vector.shape[0]
     if n % 2 != 0:
-        raise TypeError(f"Dimension {n=} must be an even number!")
+        raise ValueError(f"Dimension {n=} must be an even number!")
     grad = np.zeros_like(vector)
     for j in range(n // 2):
         grad[2 * j, 0] = -40 * (
@@ -70,7 +70,7 @@ def gradient_rosenbrook(vector: np.ndarray):
 def hess_rosenbrook(vector: np.ndarray):
     n = vector.shape[0]
     if n % 2 != 0:
-        raise TypeError(f"Dimension {n=} must be an even number!")
+        raise ValueError(f"Dimension {n=} must be an even number!")
     hess = np.zeros((n, n))
     for j in range(n // 2):
         hess[2 * j, 2 * j] = -40 * (vector[2 * j + 1, 0] - 3 * (vector[2 * j, 0] ** 2))
@@ -85,10 +85,10 @@ def hess_rosenbrook(vector: np.ndarray):
 
 def sty_tang(vector: np.ndarray):
     n = vector.shape[0]
-    soma = 0
+    f = 0
     for i in range(n):
-        soma += vector[i, 0] ** 4 - 16 * vector[i, 0] ** 2 + 5 * vector[i, 0]
-    return soma
+        f += vector[i, 0] ** 4 - 16 * vector[i, 0] ** 2 + 5 * vector[i, 0]
+    return f
 
 
 def gradient_sty_tang(vector: np.ndarray):
@@ -112,10 +112,10 @@ def hess_sty_tang(vector: np.ndarray):
 
 def rastrigin(vector: np.ndarray):
     n = vector.shape[0]
-    soma = 0
+    f = 0
     for i in range(n):
-        soma += vector[i, 0] ** 2 - 10 * np.cos(2 * np.pi * vector[i, 0])
-    return soma
+        f += vector[i, 0] ** 2 - 10 * np.cos(2 * np.pi * vector[i, 0])
+    return f
 
 
 def gradient_rastrigin(vector: np.ndarray):
